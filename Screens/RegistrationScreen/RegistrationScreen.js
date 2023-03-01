@@ -1,9 +1,9 @@
 import React from "react";
-import { View, ImageBackground, StyleSheet, Text } from "react-native";
+import { View, Text } from "react-native";//, ImageBackground, StyleSheet,
 
 export default RegistrationScreen = () => {
     return (
-        <View style={styles.container}>
+        <View >
             {/* <ImageBackground 
             style={styles.image}
             source={require("../../assets/image/bg-reg-log.png")}></ImageBackground> */}
@@ -12,10 +12,10 @@ export default RegistrationScreen = () => {
     );
 }
 
-const styles = StyleSheet.create({
-    image: {
-        flex: 1,
-        resizeMode: 'cover',
-        justifyContent: 'center'
-    }
-});
+// const styles = StyleSheet.create({
+//     image: {
+//         flex: 1,
+//         resizeMode: 'cover',
+//         justifyContent: 'center'
+//     }
+// });
