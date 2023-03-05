@@ -1,28 +1,93 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, Image } from "react-native";
+
+const initislState = {
+    username: '',
+    email: '',
+    password: '',
+}
 
 export default RegistrationScreen = () => {
-    const [isActiveKeyBoard, setIsActiveKeyBoard] = useState(false);
+    const [state, setState] = useState(initislState);
+    const [isHover, setIsHoiver] = useState(null);
+    const [showPassword, setShowPassword] = useState(true);
+
+    const handleSubmit = () => {
+        if (state.username === '' || state.email === '' || state.password === '') {
+            return alert('Please fill all fields');
+        }
+        console.log(state);
+        setState(initislState);
+    }
 
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            >
-            <View style={{ ...styles.form, padding: isActiveKeyBoard ? 32 : 1 }}>
+            keyboardVerticalOffset={Platform.OS == 'ios' ? '-170' : '-0'}
+        >
+            <View style={styles.form}>
+
+                <View style={styles.image_box}>
+                    <TouchableOpacity style={styles.image}
+                        activeOpacity={0.8}
+                    >
+                        <Image style={styles.btn_add}
+                            source={require('../image/icons/add.png')} />
+
+                    </TouchableOpacity>
+                </View>
 
                 <Text style={styles.title}>Registration</Text>
+                <View>
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'login' ? '#FF6C00' : '#E8E8E8',
+                    }}
+                        placeholder="Login"
+                        value={state.username}
+                        onFocus={() => setIsHoiver('login')}
+                        onBlur={() => setIsHoiver(null)}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, username: value }))} />
 
-                <TextInput style={styles.input} placeholder="Username" onFocus={() => setIsActiveKeyBoard(false)} />
-                <TextInput style={{ ...styles.input, marginBottom: 16, marginTop: 16 }} placeholder="Email" onFocus={() => setIsActiveKeyBoard(false)} />
-                <TextInput style={styles.input} secureTextEntry={true} placeholder="Password" onFocus={() => setIsActiveKeyBoard(false)} />
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16, marginTop: 16
+                    }}
+                        placeholder="Email"
+                        value={state.email}
+                        onFocus={() => setIsHoiver('email')}
+                        onBlur={() => setIsHoiver(null)}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, email: value }))} />
+
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'password' ? '#FF6C00' : '#E8E8E8',
+                    }} secureTextEntry={showPassword}
+                        placeholder="Password"
+                        onFocus={() => setIsHoiver('password')}
+                        onBlur={() => setIsHoiver(null)}
+                        value={state.password}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, password: value }))}
+                    />
+
+                    <TouchableOpacity style={styles.show_password}
+                        onPressIn={() => setShowPassword(prev => !prev)}>
+                        <Text>Show</Text>
+                    </TouchableOpacity>
+
+                </View>
 
                 <TouchableOpacity activeOpacity={0.5}
-                    style={styles.form_button} >
+                    style={styles.form_button} onPress={handleSubmit}>
                     <Text style={styles.form_button__text}>Sing up</Text>
                 </TouchableOpacity>
-                <Text style={styles.form_text}>Already have an account? Log in</Text>
+
+                <Text style={styles.form_link}>Already have an account? Log in</Text>
             </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     );
 }
 
@@ -33,11 +98,30 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
     },
+    image_box: {
+        alignItems: 'center',
+        marginBottom: 32,
+    },
+    image: {
+        position: 'absolute',
+        top: -60,
+        flex: 1,
+        width: 120,
+        height: 120,
+        backgroundColor: '#F6F6F6',
+        borderRadius: 16,
+    },
+    btn_add: {
+        position: 'absolute',
+        bottom: 10,
+        left: 105,
+        borderRadius: 13,
+        backgroundColor: '#FFFFFF',
+    },
     title: {
         marginTop: 92,
         marginBottom: 32,
-        fontFamily: 'Roboto',
-        fontWeight: 500,
+        fontFamily: 'Roboto-Medium',
         fontSize: 30,
         lineHeight: 35,
         textAlign: 'center',
@@ -47,11 +131,19 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: '#E8E8E8',
         backgroundColor: '#F6F6F6',
         height: 50,
         paddingLeft: 16,
         marginHorizontal: 16,
+    },
+    show_password: {
+        position: 'absolute',
+        bottom: 17,
+        left: 340,
+        fontFamily: 'Roboto-Regular',
+        fontSize: 16,
+        lineHeight: 19,
+        color: '#1B4371',
     },
     form_button: {
         ...Platform.select({
@@ -62,7 +154,6 @@ const styles = StyleSheet.create({
                 backgroundColor: '#FF6C33',
             }
         }),
-        // display: 'none',
         height: 51,
         borderRadius: 100,
         marginHorizontal: 16,
@@ -71,16 +162,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     form_button__text: {
-        fontFamily: 'Roboto',
-        fontWeight: 400,
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         lineHeight: 19,
         textAlign: 'center',
         color: '#FFFFFF',
     },
-    form_text: {
-        fontFamily: 'Roboto',
-        fontWeight: 400,
+    form_link: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         lineHeight: 19,
         textAlign: 'center',
