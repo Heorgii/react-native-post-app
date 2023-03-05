@@ -1,7 +1,7 @@
 import { ImageBackground, StyleSheet, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import * as Font from 'expo-font';
 import RegistrationScreen from './Screens/RegistrationScreen/RegistrationScreen';
-// import LoginScreen from './Screens/LoginScreen/LoginScreen';
+import LoginScreen from './Screens/LoginScreen/LoginScreen';
 
 export default function App() {
 
