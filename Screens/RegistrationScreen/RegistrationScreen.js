@@ -11,6 +11,7 @@ export default RegistrationScreen = () => {
     const [state, setState] = useState(initislState);
     const [isHover, setIsHoiver] = useState(null);
     const [showPassword, setShowPassword] = useState(true);
+    const [avatar, setAvatar] = useState(false);
 
     const handleSubmit = () => {
         if (state.username === '' || state.email === '' || state.password === '') {
@@ -23,17 +24,22 @@ export default RegistrationScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS == 'ios' ? '-170' : '-0'}
+            keyboardVerticalOffset={Platform.OS == 'ios' ? '-140' : '-0'}
         >
             <View style={styles.form}>
 
                 <View style={styles.image_box}>
                     <TouchableOpacity style={styles.image}
-                        activeOpacity={0.8}
+                        activeOpacity={0.5}
                     >
-                        <Image style={styles.btn_add}
-                            source={require('../image/icons/add.png')} />
-
+                        {avatar ? (
+                            <Image style={styles.btn_add}
+                                source={require('../image/icons/delete.png')} />
+                        ) :
+                            (
+                                <Image style={styles.btn_add}
+                                    source={require('../image/icons/add.png')} />
+                            )}
                     </TouchableOpacity>
                 </View>
 
@@ -74,8 +80,8 @@ export default RegistrationScreen = () => {
                     />
 
                     <TouchableOpacity style={styles.show_password}
-                        onPressIn={() => setShowPassword(prev => !prev)}>
-                        <Text>Show</Text>
+                        onPress={() => setShowPassword(prev => !prev)}>
+                        <Text style={styles.show_password__text}>Show</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -140,6 +146,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 17,
         left: 340,
+    },
+    show_password__text: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
         lineHeight: 19,
