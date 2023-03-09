@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, Image } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 
 const initislState = {
-    username: '',
     email: '',
     password: '',
 }
 
-export default RegistrationScreen = () => {
+export default RegistrationScreen = ({ navigation }) => {
     const [state, setState] = useState(initislState);
     const [isHover, setIsHoiver] = useState(null);
     const [showPassword, setShowPassword] = useState(true);
-    const [avatar, setAvatar] = useState(false);
 
     const handleSubmit = () => {
-        if (state.username === '' || state.email === '' || state.password === '') {
+        if (state.email === '' || state.password === '') {
             return alert('Please fill all fields');
         }
         console.log(state);
@@ -24,41 +22,16 @@ export default RegistrationScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS == 'ios' ? '-140' : '-0'}
+            keyboardVerticalOffset={Platform.OS == 'ios' ? '-310' : '-0'}
         >
             <View style={styles.form}>
 
-                <View style={styles.image_box}>
-                    <TouchableOpacity style={styles.image}
-                        activeOpacity={0.5}
-                    >
-                        {avatar ? (
-                            <Image style={styles.btn_add}
-                                source={require('../image/icons/delete.png')} />
-                        ) :
-                            (
-                                <Image style={styles.btn_add}
-                                    source={require('../image/icons/add.png')} />
-                            )}
-                    </TouchableOpacity>
-                </View>
-
-                <Text style={styles.title}>Registration</Text>
+                <Text style={styles.title}>Log in</Text>
                 <View>
-                    <TextInput style={{
-                        ...styles.input, borderColor:
-                            isHover === 'login' ? '#FF6C00' : '#E8E8E8',
-                    }}
-                        placeholder="Login"
-                        value={state.username}
-                        onFocus={() => setIsHoiver('login')}
-                        onBlur={() => setIsHoiver(null)}
-                        onChangeText={(value) =>
-                            setState((prevState) => ({ ...prevState, username: value }))} />
 
                     <TextInput style={{
                         ...styles.input, borderColor:
-                            isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16, marginTop: 16
+                            isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16
                     }}
                         placeholder="Email"
                         value={state.email}
@@ -88,10 +61,12 @@ export default RegistrationScreen = () => {
 
                 <TouchableOpacity activeOpacity={0.5}
                     style={styles.form_button} onPress={handleSubmit}>
-                    <Text style={styles.form_button__text}>Sing up</Text>
+                    <Text style={styles.form_button__text}>Log in</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.form_link}>Already have an account? Log in</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.form_link}>Don't have an account? Sing up</Text>
+                </TouchableOpacity>
             </View>
         </KeyboardAvoidingView >
     );
@@ -104,28 +79,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
     },
-    image_box: {
-        alignItems: 'center',
-        marginBottom: 32,
-    },
-    image: {
-        position: 'absolute',
-        top: -60,
-        flex: 1,
-        width: 120,
-        height: 120,
-        backgroundColor: '#F6F6F6',
-        borderRadius: 16,
-    },
-    btn_add: {
-        position: 'absolute',
-        bottom: 10,
-        left: 105,
-        borderRadius: 13,
-        backgroundColor: '#FFFFFF',
-    },
     title: {
-        marginTop: 92,
+        marginTop: 32,
         marginBottom: 32,
         fontFamily: 'Roboto-Medium',
         fontSize: 30,
