@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, Image, TouchableWithoutFeedback, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, Image } from "react-native";
 
 const initislState = {
     username: '',
@@ -19,97 +19,84 @@ export default RegistrationScreen = ({ navigation }) => {
         }
         console.log(state);
         setState(initislState);
-    }
-
-
-    const keyboardHide = () => {
-        Keyboard.dismiss();
+        navigation.navigate('Home');
     }
 
     return (
-        // <TouchableWithoutFeedback onPress={keyboardHide}>
-        //     <View style={styles.container}>
-        //         <ImageBackground
-        //             source={require('../../image/bgImage.jpg')}
-        //             style={styles.image}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS == 'ios' ? '-140' : '-0'}
+        >
+            <View style={styles.form}>
 
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                        keyboardVerticalOffset={Platform.OS == 'ios' ? '-140' : '-0'}
+                <View style={styles.image_box}>
+                    <TouchableOpacity style={styles.image}
+                        activeOpacity={0.5}
                     >
-                        <View style={styles.form}>
+                        {avatar ? (
+                            <Image style={styles.btn_add}
+                                source={require('../../image/icons/delete.png')} />
+                        ) :
+                            (
+                                <Image style={styles.btn_add}
+                                    source={require('../../image/icons/add.png')} />
+                            )}
+                    </TouchableOpacity>
+                </View>
 
-                            <View style={styles.image_box}>
-                                <TouchableOpacity style={styles.image}
-                                    activeOpacity={0.5}
-                                >
-                                    {avatar ? (
-                                        <Image style={styles.btn_add}
-                                            source={require('../../image/icons/delete.png')} />
-                                    ) :
-                                        (
-                                            <Image style={styles.btn_add}
-                                                source={require('../../image/icons/add.png')} />
-                                        )}
-                                </TouchableOpacity>
-                            </View>
+                <Text style={styles.title}>Registration</Text>
+                <View>
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'login' ? '#FF6C00' : '#E8E8E8',
+                    }}
+                        placeholder="Login"
+                        value={state.username}
+                        onFocus={() => setIsHoiver('login')}
+                        onBlur={() => setIsHoiver(null)}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, username: value }))} />
 
-                            <Text style={styles.title}>Registration</Text>
-                            <View>
-                                <TextInput style={{
-                                    ...styles.input, borderColor:
-                                        isHover === 'login' ? '#FF6C00' : '#E8E8E8',
-                                }}
-                                    placeholder="Login"
-                                    value={state.username}
-                                    onFocus={() => setIsHoiver('login')}
-                                    onBlur={() => setIsHoiver(null)}
-                                    onChangeText={(value) =>
-                                        setState((prevState) => ({ ...prevState, username: value }))} />
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16, marginTop: 16
+                    }}
+                        placeholder="Email"
+                        value={state.email}
+                        onFocus={() => setIsHoiver('email')}
+                        onBlur={() => setIsHoiver(null)}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, email: value }))} />
 
-                                <TextInput style={{
-                                    ...styles.input, borderColor:
-                                        isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16, marginTop: 16
-                                }}
-                                    placeholder="Email"
-                                    value={state.email}
-                                    onFocus={() => setIsHoiver('email')}
-                                    onBlur={() => setIsHoiver(null)}
-                                    onChangeText={(value) =>
-                                        setState((prevState) => ({ ...prevState, email: value }))} />
+                    <TextInput style={{
+                        ...styles.input, borderColor:
+                            isHover === 'password' ? '#FF6C00' : '#E8E8E8',
+                    }} secureTextEntry={showPassword}
+                        placeholder="Password"
+                        onFocus={() => setIsHoiver('password')}
+                        onBlur={() => setIsHoiver(null)}
+                        value={state.password}
+                        onChangeText={(value) =>
+                            setState((prevState) => ({ ...prevState, password: value }))}
+                    />
 
-                                <TextInput style={{
-                                    ...styles.input, borderColor:
-                                        isHover === 'password' ? '#FF6C00' : '#E8E8E8',
-                                }} secureTextEntry={showPassword}
-                                    placeholder="Password"
-                                    onFocus={() => setIsHoiver('password')}
-                                    onBlur={() => setIsHoiver(null)}
-                                    value={state.password}
-                                    onChangeText={(value) =>
-                                        setState((prevState) => ({ ...prevState, password: value }))}
-                                />
+                    <TouchableOpacity style={styles.show_password}
+                        onPress={() => setShowPassword(prev => !prev)}>
+                        <Text style={styles.show_password__text}>Show</Text>
+                    </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.show_password}
-                                    onPress={() => setShowPassword(prev => !prev)}>
-                                    <Text style={styles.show_password__text}>Show</Text>
-                                </TouchableOpacity>
+                </View>
 
-                            </View>
+                <TouchableOpacity activeOpacity={0.5}
+                    style={styles.form_button} onPress={handleSubmit}>
+                    <Text style={styles.form_button__text}>Sing up</Text>
+                </TouchableOpacity>
 
-                            <TouchableOpacity activeOpacity={0.5}
-                                style={styles.form_button} onPress={handleSubmit}>
-                                <Text style={styles.form_button__text}>Sing up</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                                <Text style={styles.form_link}>Already have an account? Log in</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </KeyboardAvoidingView >
-        //         </ImageBackground>
-        //     </View>
-        // </TouchableWithoutFeedback>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.form_link}>Already have an account? Log in</Text>
+                </TouchableOpacity>
+            </View>
+        </KeyboardAvoidingView >
     );
 }
 

@@ -1,20 +1,73 @@
 import React from "react";
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const NavBtnStack = createBottomTabNavigator();
+
+import PostsScreen from './PostsScreen';
+import CreatePostsScreen from './CreatePostsScreen';
+import ProfileScreen from './ProfileScreen';
+// Iocns
+import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Home = () => {
     return (
-        <View style={styles.container}>
-            <Text>Home Screen</Text>
-        </View>
+        <NavBtnStack.Navigator tabBarOptions={{ showLabel: false, }}>
+            <NavBtnStack.Screen options={{
+                headerTitleStyle: { alignItems: "center", color: '#212121' },
+                headerRight: () => (
+                    <TouchableOpacity style={styles.logout_btn} onPress={() => { }}>
+                        <MaterialIcons name="logout" size={24} color="black" />
+                    </TouchableOpacity>
+                ),
+                tabBarIcon: ({ focused, size, color }) => (
+                    <Ionicons name="grid-outline" size={24} color="#212121" />
+                )
+            }} name='Posts' component={PostsScreen} />
+
+            <NavBtnStack.Screen options={{
+                headerTitleStyle: { alignItems: "center", color: '#212121' },
+                tabBarIcon: ({ focused, size, color }) => (
+                    <View style={styles.nav_btn__box}>
+                        <Ionicons name="add-outline" size={24} color="#212121" style={styles.nav_btn} />
+                    </View>
+                )
+            }} name='Create Posts' component={CreatePostsScreen} />
+
+            <NavBtnStack.Screen options={{
+                headerTitleStyle: { alignItems: "center", color: '#212121' },
+                tabBarIcon: ({ focused, size, color }) => (
+                    <Feather name="user" size={24} color="#212121" />
+                )
+            }} name='Profile' component={ProfileScreen} />
+        </NavBtnStack.Navigator>
     );
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
+    logout_btn: {
+        marginRight: 16,
+    },
+    nav_btn__box: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: '#FF6C00',
+        width: 70,
+        height: 40,
+        color: 'white',
+    },
+    nav_btn: {
+        color: '#FFFFFF'
+    }
 });
 
 export default Home;

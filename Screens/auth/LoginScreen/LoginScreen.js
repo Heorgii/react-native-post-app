@@ -17,6 +17,7 @@ export default RegistrationScreen = ({ navigation }) => {
         }
         console.log(state);
         setState(initislState);
+        navigation.navigate('Home');
     }
 
     return (
