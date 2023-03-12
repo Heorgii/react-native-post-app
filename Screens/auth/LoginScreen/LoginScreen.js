@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, ImageBackground, Keyboard } from "react-native";
 
 const initislState = {
     email: '',
@@ -20,60 +20,81 @@ export default RegistrationScreen = ({ navigation }) => {
         navigation.navigate('Home');
     }
 
+    const keyboardHide = () => {
+        Keyboard.dismiss();
+    }
+
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS == 'ios' ? '-310' : '-0'}
-        >
-            <View style={styles.form}>
+        <TouchableWithoutFeedback onPress={keyboardHide}>
+            <View style={styles.container}>
+                <ImageBackground
+                    source={require('../../image/bgImage.jpg')}
+                    style={styles.main_image}>
 
-                <Text style={styles.title}>Log in</Text>
-                <View>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                        keyboardVerticalOffset={Platform.OS == 'ios' ? '-310' : '-0'}
+                    >
+                        <View style={styles.form}>
 
-                    <TextInput style={{
-                        ...styles.input, borderColor:
-                            isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16
-                    }}
-                        placeholder="Email"
-                        value={state.email}
-                        onFocus={() => setIsHoiver('email')}
-                        onBlur={() => setIsHoiver(null)}
-                        onChangeText={(value) =>
-                            setState((prevState) => ({ ...prevState, email: value }))} />
+                            <Text style={styles.title}>Log in</Text>
+                            <View>
 
-                    <TextInput style={{
-                        ...styles.input, borderColor:
-                            isHover === 'password' ? '#FF6C00' : '#E8E8E8',
-                    }} secureTextEntry={showPassword}
-                        placeholder="Password"
-                        onFocus={() => setIsHoiver('password')}
-                        onBlur={() => setIsHoiver(null)}
-                        value={state.password}
-                        onChangeText={(value) =>
-                            setState((prevState) => ({ ...prevState, password: value }))}
-                    />
+                                <TextInput style={{
+                                    ...styles.input, borderColor:
+                                        isHover === 'email' ? '#FF6C00' : '#E8E8E8', marginBottom: 16
+                                }}
+                                    placeholder="Email"
+                                    value={state.email}
+                                    onFocus={() => setIsHoiver('email')}
+                                    onBlur={() => setIsHoiver(null)}
+                                    onChangeText={(value) =>
+                                        setState((prevState) => ({ ...prevState, email: value }))} />
 
-                    <TouchableOpacity style={styles.show_password}
-                        onPress={() => setShowPassword(prev => !prev)}>
-                        <Text style={styles.show_password__text}>Show</Text>
-                    </TouchableOpacity>
+                                <TextInput style={{
+                                    ...styles.input, borderColor:
+                                        isHover === 'password' ? '#FF6C00' : '#E8E8E8',
+                                }} secureTextEntry={showPassword}
+                                    placeholder="Password"
+                                    onFocus={() => setIsHoiver('password')}
+                                    onBlur={() => setIsHoiver(null)}
+                                    value={state.password}
+                                    onChangeText={(value) =>
+                                        setState((prevState) => ({ ...prevState, password: value }))}
+                                />
 
-                </View>
+                                <TouchableOpacity style={styles.show_password}
+                                    onPress={() => setShowPassword(prev => !prev)}>
+                                    <Text style={styles.show_password__text}>Show</Text>
+                                </TouchableOpacity>
 
-                <TouchableOpacity activeOpacity={0.5}
-                    style={styles.form_button} onPress={handleSubmit}>
-                    <Text style={styles.form_button__text}>Log in</Text>
-                </TouchableOpacity>
+                            </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                    <Text style={styles.form_link}>Don't have an account? Sing up</Text>
-                </TouchableOpacity>
-            </View>
-        </KeyboardAvoidingView >
+                            <TouchableOpacity activeOpacity={0.5}
+                                style={styles.form_button} onPress={handleSubmit}>
+                                <Text style={styles.form_button__text}>Log in</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                                <Text style={styles.form_link}>Don't have an account? Sing up</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </KeyboardAvoidingView >
+                </ImageBackground >
+            </View >
+        </TouchableWithoutFeedback >
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    main_image: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'flex-end',
+    },
     form: {
         backgroundColor: '#FFFFFF',
         height: 549,

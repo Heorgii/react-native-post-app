@@ -18,8 +18,9 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer style={styles.nav}>
+    <NavigationContainer >
       {routing}
     </NavigationContainer>
   );
 }
+
