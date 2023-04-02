@@ -11,7 +11,7 @@ const fonts = async () => {
 }
 
 export default function App() {
-  const routing = useRoute(null);
+  const routing = useRoute(true);
 
   if (!fonts) {
     return null;
