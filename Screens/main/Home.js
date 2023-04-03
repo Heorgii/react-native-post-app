@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const NavBtnStack = createBottomTabNavigator();
 
-import PostsScreen from './PostsScreen';
+import DefaultPostsScreen from "../nestedScreens/DefaultPostScreen";
 import CreatePostsScreen from './CreatePostsScreen';
 import ProfileScreen from './ProfileScreen';
 // Iocns
@@ -25,7 +25,7 @@ const Home = () => {
                 tabBarIcon: ({ focused, size, color }) => (
                     <Ionicons name="grid-outline" size={24} color="#212121" />
                 )
-            }} name='Posts' component={PostsScreen} />
+            }} name='DefaultPostScreen' component={DefaultPostsScreen} />
 
             <NavBtnStack.Screen options={{
                 headerTitleStyle: { alignItems: "center", color: '#212121' },
