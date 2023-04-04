@@ -9,12 +9,14 @@ import {
   Button,
 } from "react-native";
 
-const DefaultPostsScreen = ({ route, navigation }) => {
+const DefaultPostsScreen = ({ route, navigation, discr, location }) => {
   const [posts, setPosts] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
+      // setData((prevState) => [...prevState, discr, loc]);
     }
   }, [route.params]);
 
@@ -28,12 +30,18 @@ const DefaultPostsScreen = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View>
             <Image source={{ uri: item.photo }} style={styles.imageCont} />
+            <Text>{item.location}</Text>
           </View>
         )}
       />
 
-      <Button title="Map" onPress={() => navigation.navigate('MapScreen')} />
-      <Button title="Comments" onPress={() => navigation.navigate('CommentsScreen')} />
+      {/* <Text>{route.discr}</Text> */}
+
+      <Button title="Map" onPress={() => navigation.navigate("MapScreen")} />
+      <Button
+        title="Comments"
+        onPress={() => navigation.navigate("CommentsScreen")}
+      />
     </View>
   );
 };

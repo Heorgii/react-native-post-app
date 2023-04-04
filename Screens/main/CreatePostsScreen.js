@@ -17,16 +17,19 @@ const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  // const [discr, setDiscr] = useState("");
+  const [location, setLocation] = useState(null);
 
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
+    setLocation(location);
     console.log("location", location);
     setPhoto(uri);
   };
 
   const sendPhoto = () => {
-    navigation.navigate("DefaultPostScreen", { photo });
+    navigation.navigate("DefaultPostScreen", { photo, location });
   };
 
   useEffect(() => {
@@ -60,7 +63,12 @@ const CreatePostsScreen = ({ navigation }) => {
       <Text style={styles.text}>Upload a photo</Text>
 
       <View>
-        <TextInput style={styles.cameraInp} type="text" placeholder="Name..." />
+        <TextInput
+          style={styles.cameraInp}
+          type="text"
+          placeholder="Name..."
+          // value={discr}
+        />
 
         <View>
           <Ionicons
@@ -73,6 +81,7 @@ const CreatePostsScreen = ({ navigation }) => {
             style={styles.cameraInp2}
             type="text"
             placeholder="Location"
+            value={location}
           />
         </View>
       </View>
