@@ -9,18 +9,19 @@ import {
   Button,
 } from "react-native";
 
-const DefaultPostsScreen = ({ route, navigation, discr, location }) => {
+const DefaultPostsScreen = ({ route, navigation}) => {
   const [posts, setPosts] = useState([]);
-  const [data, setData] = useState([]);
+  const [local, setLocal] = useState([]);
 
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-      // setData((prevState) => [...prevState, discr, loc]);
+      // setPosts((prevState) => [...prevState, route.params]);
+      setLocal((prevState) => [...prevState, route.params.location]);
     }
   }, [route.params]);
 
   console.log("posts", posts);
+  console.log("local", local);
 
   return (
     <View style={styles.container}>
@@ -29,11 +30,11 @@ const DefaultPostsScreen = ({ route, navigation, discr, location }) => {
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
           <View>
-            <Image source={{ uri: item.photo }} style={styles.imageCont} />
-            <Text>{item.location}</Text>
+            {/* <Image source={{ uri: item.photo }} style={styles.imageCont} /> */}
           </View>
         )}
       />
+      <Text>wwsssjdll</Text>
 
       {/* <Text>{route.discr}</Text> */}
 

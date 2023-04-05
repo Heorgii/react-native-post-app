@@ -17,12 +17,11 @@ const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  // const [discr, setDiscr] = useState("");
   const [location, setLocation] = useState(null);
 
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
-    const location = await Location.getCurrentPositionAsync();
+    const location = await Location.getCurrentPositionAsync({});
     setLocation(location);
     console.log("location", location);
     setPhoto(uri);
@@ -67,7 +66,6 @@ const CreatePostsScreen = ({ navigation }) => {
           style={styles.cameraInp}
           type="text"
           placeholder="Name..."
-          // value={discr}
         />
 
         <View>
