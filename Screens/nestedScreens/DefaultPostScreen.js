@@ -9,14 +9,14 @@ import {
   Button,
 } from "react-native";
 
-const DefaultPostsScreen = ({ route, navigation}) => {
+const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [local, setLocal] = useState([]);
 
   useEffect(() => {
     if (route.params) {
-      // setPosts((prevState) => [...prevState, route.params]);
-      setLocal((prevState) => [...prevState, route.params.location]);
+      setPosts((prevState) => [...prevState, route.params]);
+      // setLocal((prevState) => [...prevState, route.params.location]);
     }
   }, [route.params]);
 
@@ -30,18 +30,18 @@ const DefaultPostsScreen = ({ route, navigation}) => {
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
           <View>
-            {/* <Image source={{ uri: item.photo }} style={styles.imageCont} /> */}
+            <Image source={{ uri: item.photo }} style={styles.imageCont} />
+            <Text>{JSON.stringify(local)}</Text>
           </View>
         )}
       />
-      <Text>wwsssjdll</Text>
 
       {/* <Text>{route.discr}</Text> */}
 
-      <Button title="Map" onPress={() => navigation.navigate("MapScreen")} />
+      <Button title="Map" onPress={() => {navigation.navigate("Map")}} />
       <Button
         title="Comments"
-        onPress={() => navigation.navigate("CommentsScreen")}
+        onPress={() => {navigation.navigate("Comments")}}
       />
     </View>
   );

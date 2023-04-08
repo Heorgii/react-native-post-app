@@ -1,14 +1,14 @@
-import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import { useRoute } from './router';
+import * as Font from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { useRoute } from "./router";
 
 const fonts = async () => {
   await Font.loadAsync({
-    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
-    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
-}
+};
 
 export default function App() {
   const routing = useRoute(true);
@@ -17,10 +17,5 @@ export default function App() {
     return null;
   }
 
-  return (
-    <NavigationContainer >
-      {routing}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{routing}</NavigationContainer>;
 }
-

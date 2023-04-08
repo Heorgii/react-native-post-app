@@ -15,21 +15,9 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [location, setLocation] = useState(null);
-
-  const takePhoto = async () => {
-    const { uri } = await camera.takePictureAsync();
-    const location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-    console.log("location", location);
-    setPhoto(uri);
-  };
-
-  const sendPhoto = () => {
-    navigation.navigate("DefaultPostScreen", { photo, location });
-  };
+  const [location, setLocation] = useState();
 
   useEffect(() => {
     (async () => {
@@ -41,32 +29,35 @@ const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
+  const takePhoto = async () => {
+    const { uri } = await camera.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync({});
+    const address = await Location.reverseGeocodeAsync(location.coords);
+    console.log("address", address);
+    setLocation(address);
+    setPhoto(uri);
+  };
+
+  const sendPhoto = () => {
+    navigation.navigate("Posts", { photo, location });
+  };
+
   return (
     <View style={styles.container}>
-      <Camera
-        style={styles.camera}
-        type={type}
-        ref={(ref) => {
-          setCamera(ref);
-        }}
-      >
-        <TouchableOpacity style={styles.tackPht} onPress={takePhoto}>
-          <FontAwesome name="camera" size={24} color="white" />
-        </TouchableOpacity>
+      <Camera style={styles.camera} type={type} ref={setCamera}>
         {photo && (
           <View style={styles.imageBox}>
             <Image source={{ uri: photo }} />
           </View>
         )}
+        <TouchableOpacity style={styles.tackPht} onPress={takePhoto}>
+          <FontAwesome name="camera" size={24} color="white" />
+        </TouchableOpacity>
       </Camera>
       <Text style={styles.text}>Upload a photo</Text>
 
       <View>
-        <TextInput
-          style={styles.cameraInp}
-          type="text"
-          placeholder="Name..."
-        />
+        <TextInput style={styles.cameraInp} type="text" placeholder="Name..." />
 
         <View>
           <Ionicons
@@ -79,7 +70,7 @@ const CreatePostsScreen = ({ navigation }) => {
             style={styles.cameraInp2}
             type="text"
             placeholder="Location"
-            value={location}
+            value={JSON.stringify(location)}
           />
         </View>
       </View>
