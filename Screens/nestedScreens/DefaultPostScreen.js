@@ -36,8 +36,6 @@ const DefaultPostsScreen = ({ route, navigation }) => {
         )}
       />
 
-      {/* <Text>{route.discr}</Text> */}
-
       <Button title="Map" onPress={() => {navigation.navigate("Map")}} />
       <Button
         title="Comments"
