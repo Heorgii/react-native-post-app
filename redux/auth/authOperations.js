@@ -1,7 +1,7 @@
-import { async } from "@firebase/util";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
@@ -41,8 +41,21 @@ export const signin =
     }
   };
 
-export const signout = () => async (dispath, getSatte) => {};
+export const signout = () => async (dispath, getSatte) => {
+  await signOut();
+};
 
-export const authStateChangeUser = (dispath, getSatte) => async () => {
-  await auth.onAuthStateChanged((user) => setUser(user));
+export const authStateChangeUser = (dispath, getSatte) =>  () => {
+  await auth.onAuthStateChanged((user) => {
+    if (user) {
+      dispath(authSlice.actions.authStateChange({ stateChange: true }));
+
+      dispath(
+        authSlice.actions.updateUserProfile({
+          userId: auth.currentUser.uid(),
+          userName: auth.currentUser.displayName,
+        })
+      );
+    }
+  });
 };
