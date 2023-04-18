@@ -13,7 +13,8 @@ const Main = () => {
     dispath(authStateChangeUser());
   }, []);
 
-  const routing = useRoute(stateChange);
+  // const routing = useRoute(stateChange);
+  const routing = useRoute(true);
 
   return <NavigationContainer>{routing}</NavigationContainer>;
 };

@@ -11,6 +11,7 @@ import ProfileScreen from "./ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { signout } from "../../redux/auth/authOperations";
 
 const Home = () => {
   return (
@@ -19,8 +20,8 @@ const Home = () => {
         options={{
           headerTitleStyle: { alignItems: "center", color: "#212121" },
           headerRight: () => (
-            <TouchableOpacity style={styles.logout_btn} onPress={() => {}}>
-              <MaterialIcons name="logout" size={24} color="black" />
+            <TouchableOpacity style={styles.logout_btn} onPress={() => signout}>
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
           tabBarIcon: ({ focused, size, color }) => (
