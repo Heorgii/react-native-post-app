@@ -12,13 +12,18 @@ import * as Location from "expo-location";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+// import { db } from "../../firebase/config";
 import { db } from "../../firebase/config";
+import { useSelector } from "react-redux";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [location, setLocation] = useState();
+  const [message, setMessage] = useState("");
+  const [location, setLocation] = useState(null);
+
+  const { userId, userName } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -27,21 +32,34 @@ const CreatePostsScreen = ({ navigation }) => {
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
+
+      // let location = await Location.getCurrentPositionAsync({});
+      // setLocation(location);
     })();
   }, []);
 
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
-    const location = await Location.getCurrentPositionAsync({});
-    const address = await Location.reverseGeocodeAsync(location.coords);
-    console.log("address", address);
-    setLocation(address);
+    // const location = await Location.getCurrentPositionAsync({});
+    // const address = await Location.reverseGeocodeAsync(location.coords);
+    // console.log("address", address);
+    // setLocation(address);
+console.log("file",uri);
     setPhoto(uri);
   };
 
   const sendPhoto = () => {
-    uploadPhotoToServer();
-    navigation.navigate("Posts", { photo, location });
+    uploadPostToServer();
+    navigation.navigate("Posts");
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    const createPost = await db
+      .firesotre()
+      .collection("post")
+      .add({ photo, comment, location: location.coords, userId, userName });
+    return createPost;
   };
 
   const uploadPhotoToServer = async () => {
@@ -49,6 +67,12 @@ const CreatePostsScreen = ({ navigation }) => {
     const file = await response.blob();
     const uniquePostId = Date.now().toString();
     await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+    const processedPhoto = await db
+      .storage()
+      .ref("postImage")
+      .child(uniquePostId)
+      .getDownloadURL();
+    return processedPhoto;
   };
 
   return (
@@ -63,10 +87,16 @@ const CreatePostsScreen = ({ navigation }) => {
           <FontAwesome name="camera" size={24} color="white" />
         </TouchableOpacity>
       </Camera>
+
       <Text style={styles.text}>Upload a photo</Text>
 
       <View>
-        <TextInput style={styles.cameraInp} type="text" placeholder="Name..." />
+        <TextInput
+          style={styles.cameraInp}
+          type="text"
+          onChangeText={setMessage}
+          placeholder="Name..."
+        />
 
         <View>
           <Ionicons
@@ -137,7 +167,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingTop: 16,
     fontFamily: "Roboto",
-    fontweight: 400,
+    fontWeight: "400",
     fontsize: 16,
     lineHeight: 19,
     textAlign: "center",
@@ -183,3 +213,65 @@ const styles = StyleSheet.create({
 });
 
 export default CreatePostsScreen;
+
+// import React, { useState, useEffect, useRef } from "react";
+// import { Text, View, TouchableOpacity } from "react-native";
+// import { Camera } from "expo-camera";
+
+// export default function App() {
+//   const [hasPermission, setHasPermission] = useState(null);
+//   const [camera, setCamera] = useState(null);
+
+//   useEffect(() => {
+//     (async () => {
+//       const { status } = await Camera.requestPermissionsAsync();
+//       setHasPermission(status === "granted");
+//     })();
+//   }, []);
+
+//   const takePicture = async () => {
+//     if (camera) {
+//       const data = await camera.takePictureAsync(null);
+//       console.log(data.uri);
+//     }
+//   };
+
+//   if (hasPermission === null) {
+//     return <View />;
+//   }
+//   if (hasPermission === false) {
+//     return <Text>No access to camera</Text>;
+//   }
+
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <Camera
+//         style={{ flex: 1 }}
+//         type={Camera.Constants.Type.back}
+//         ref={setCamera}
+//       >
+//         <View
+//           style={{
+//             flex: 1,
+//             backgroundColor: "transparent",
+//             flexDirection: "row",
+//           }}
+//         >
+//           <TouchableOpacity
+//             style={{
+//               flex: 0.1,
+//               alignSelf: "flex-end",
+//               alignItems: "center",
+//             }}
+//             onPress={takePicture}
+//           >
+//             <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
+//               {" "}
+//               Snap{" "}
+//             </Text>
+//           </TouchableOpacity>
+//         </View>
+//       </Camera>
+//     </View>
+//   );
+// }

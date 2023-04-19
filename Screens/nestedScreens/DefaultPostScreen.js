@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, Button } from "react-native";
+import { db } from "../../firebase/config";
 
 const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [local, setLocal] = useState([]);
 
+  const getAllPost = async () => {
+    db.firestore()
+      .collection("post")
+      .onSnapshot((data) =>
+        setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      );
+  };
+
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-      // setLocal((prevState) => [...prevState, route.params.location]);
-    }
-  }, [route.params]);
+    getAllPost();
+  }, []);
 
   console.log("posts", posts);
   console.log("local", local);
@@ -31,15 +29,22 @@ const DefaultPostsScreen = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View>
             <Image source={{ uri: item.photo }} style={styles.imageCont} />
-            <Text>{JSON.stringify(local)}</Text>
+            {/* <Text>{JSON.stringify(local)}</Text> */}
           </View>
         )}
       />
 
-      <Button title="Map" onPress={() => {navigation.navigate("Map")}} />
+      <Button
+        title="Map"
+        onPress={() => {
+          navigation.navigate("Map");
+        }}
+      />
       <Button
         title="Comments"
-        onPress={() => {navigation.navigate("Comments")}}
+        onPress={() => {
+          navigation.navigate("Comments");
+        }}
       />
     </View>
   );
