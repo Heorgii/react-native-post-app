@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useDispatch } from "react-redux";
 
 const NavBtnStack = createBottomTabNavigator();
 
@@ -14,13 +15,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { signout } from "../../redux/auth/authOperations";
 
 const Home = () => {
+  const dispatch = useDispatch();
   return (
     <NavBtnStack.Navigator tabBarOptions={{ showLabel: false }}>
       <NavBtnStack.Screen
         options={{
           headerTitleStyle: { alignItems: "center", color: "#212121" },
           headerRight: () => (
-            <TouchableOpacity style={styles.logout_btn} onPress={() => signout}>
+            <TouchableOpacity
+              style={styles.logout_btn}
+              onPress={() => dispatch(signout())}
+            >
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),

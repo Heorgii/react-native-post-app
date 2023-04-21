@@ -12,7 +12,6 @@ import * as Location from "expo-location";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-// import { db } from "../../firebase/config";
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
 
@@ -44,7 +43,7 @@ const CreatePostsScreen = ({ navigation }) => {
     // const address = await Location.reverseGeocodeAsync(location.coords);
     // console.log("address", address);
     // setLocation(address);
-console.log("file",uri);
+    console.log("file", uri);
     setPhoto(uri);
   };
 

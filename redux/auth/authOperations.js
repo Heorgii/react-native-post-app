@@ -24,6 +24,7 @@ export const signup =
         authSlice.actions.updateUserProfile({
           userId: auth.currentUser.uid(),
           userName: auth.currentUser.displayName,
+          stateChange: true,
         })
       );
       console.log("user", user);
@@ -34,9 +35,17 @@ export const signup =
 
 export const signin =
   ({ email, password }) =>
-  async (dispath, getSatte) => {
+  async (dispath, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
+      // const currentUser = auth.currentUser;
+      // dispath(
+      //   authSlice.actions.updateUserProfile({
+      //     userId: currentUser.uid(),
+      //     userName: currentUser.displayName,
+      //     stateChange: true,
+      //   })
+      // );
       console.log("user", user);
     } catch (err) {
       console.log(err);
@@ -48,7 +57,7 @@ export const signout = () => async (dispath, getSatte) => {
   dispath(authSlice.actions.authSignOut());
 };
 
-export const authStateChangeUser = () => async (dispath, getSatte) => {
+export const authStateChangeUser = () => async (dispath, getState) => {
   await auth.onAuthStateChanged((user) => {
     if (user) {
       dispath(authSlice.actions.authStateChange({ stateChange: true }));
