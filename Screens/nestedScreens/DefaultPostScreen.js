@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList, Image, Button } from "react-native";
 import { db } from "../../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
 
 const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   // const [local, setLocal] = useState([]);
 
   const getAllPost = async () => {
-    db.firestore()
-      .collection("post")
-      .onSnapshot((data) =>
-        setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      );
+    const allPosts = await getDocs(collection(db, "posts"));
+    const saveAllPost = [];
+    allPosts.forEach((doc) => {
+      saveAllPost.push({ ...doc.data(), id: doc.id });
+      setPosts(saveAllPost);
+    });
   };
+
+  useEffect(() => {
+    if (route.params) {
+      setTimeout(() => {
+        getAllPost();
+      }, 100);
+      route.params = null;
+    }
+  }, [route.params]);
 
   useEffect(() => {
     getAllPost();
@@ -29,7 +40,6 @@ const DefaultPostsScreen = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View>
             <Image source={{ uri: item.photo }} style={styles.imageCont} />
-            {/* <Text>{JSON.stringify(local)}</Text> */}
             <View>
               <Text>{item.comment}</Text>
             </View>
@@ -43,7 +53,7 @@ const DefaultPostsScreen = ({ route, navigation }) => {
               <Button
                 title="Comments"
                 onPress={() => {
-                  navigation.navigate("Comments");
+                  navigation.navigate("Comments", { postId: item.id });
                 }}
               />
             </View>

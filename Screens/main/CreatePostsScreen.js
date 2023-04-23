@@ -12,65 +12,69 @@ import * as Location from "expo-location";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { db } from "../../firebase/config";
+import { db, storage } from "../../firebase/config";
 import { useSelector } from "react-redux";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [message, setMessage] = useState("");
+  const [comment, setComment] = useState("");
   const [location, setLocation] = useState(null);
 
   const { userId, userName } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       console.log("status", status);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
 
-      // let location = await Location.getCurrentPositionAsync({});
-      // setLocation(location);
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
     })();
   }, []);
 
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
-    // const location = await Location.getCurrentPositionAsync({});
+    const location = await Location.getCurrentPositionAsync({});
     // const address = await Location.reverseGeocodeAsync(location.coords);
     // console.log("address", address);
-    // setLocation(address);
-    console.log("file", uri);
     setPhoto(uri);
+    setLocation(location);
+    console.log("file", uri);
   };
 
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("Posts");
+    navigation.navigate("Posts", { photo });
   };
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    const createPost = await db
-      .firesotre()
-      .collection("post")
-      .add({ photo, comment, location: location.coords, userId, userName });
-    return createPost;
+    const createPost = doc(collection(db, "posts"));
+    await setDoc(createPost, {
+      photo,
+      comment,
+      location: location.coords,
+      userId,
+      userName,
+    });
+    // return createPost;
   };
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();
+    console.log('response: ',response, "uploadPhotoToServer file: " ,file);
     const uniquePostId = Date.now().toString();
-    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-    const processedPhoto = await db
-      .storage()
-      .ref("postImage")
-      .child(uniquePostId)
-      .getDownloadURL();
+    const storageRef = ref(storage, `postImage/${uniquePostId}`);
+    await uploadBytes(storageRef, file);
+    const processedPhoto = await getDownloadURL(storageRef);
     return processedPhoto;
   };
 
@@ -93,7 +97,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <TextInput
           style={styles.cameraInp}
           type="text"
-          onChangeText={setMessage}
+          onChangeText={setComment}
           placeholder="Name..."
         />
 
