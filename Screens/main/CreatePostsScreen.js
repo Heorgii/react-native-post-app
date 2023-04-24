@@ -34,8 +34,8 @@ const CreatePostsScreen = ({ navigation }) => {
         console.log("Permission to access location was denied");
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      // let location = await Location.getCurrentPositionAsync({});
+      // setLocation(location);
     })();
   }, []);
 
@@ -64,7 +64,6 @@ const CreatePostsScreen = ({ navigation }) => {
       userId,
       userName,
     });
-    // return createPost;
   };
 
   const uploadPhotoToServer = async () => {
@@ -216,65 +215,3 @@ const styles = StyleSheet.create({
 });
 
 export default CreatePostsScreen;
-
-// import React, { useState, useEffect, useRef } from "react";
-// import { Text, View, TouchableOpacity } from "react-native";
-// import { Camera } from "expo-camera";
-
-// export default function App() {
-//   const [hasPermission, setHasPermission] = useState(null);
-//   const [camera, setCamera] = useState(null);
-
-//   useEffect(() => {
-//     (async () => {
-//       const { status } = await Camera.requestPermissionsAsync();
-//       setHasPermission(status === "granted");
-//     })();
-//   }, []);
-
-//   const takePicture = async () => {
-//     if (camera) {
-//       const data = await camera.takePictureAsync(null);
-//       console.log(data.uri);
-//     }
-//   };
-
-//   if (hasPermission === null) {
-//     return <View />;
-//   }
-//   if (hasPermission === false) {
-//     return <Text>No access to camera</Text>;
-//   }
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Camera
-//         style={{ flex: 1 }}
-//         type={Camera.Constants.Type.back}
-//         ref={setCamera}
-//       >
-//         <View
-//           style={{
-//             flex: 1,
-//             backgroundColor: "transparent",
-//             flexDirection: "row",
-//           }}
-//         >
-//           <TouchableOpacity
-//             style={{
-//               flex: 0.1,
-//               alignSelf: "flex-end",
-//               alignItems: "center",
-//             }}
-//             onPress={takePicture}
-//           >
-//             <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
-//               {" "}
-//               Snap{" "}
-//             </Text>
-//           </TouchableOpacity>
-//         </View>
-//       </Camera>
-//     </View>
-//   );
-// }
