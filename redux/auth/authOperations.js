@@ -37,14 +37,14 @@ export const signin =
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
    
-      const currentUser = auth.currentUser;
-      dispatch(
-        authSlice.actions.updateUserProfile({
-          userId: currentUser.uid(),
-          userName: currentUser.displayName,
-          stateChange: true,
-        })
-      );
+      // const currentUser = auth.currentUser;
+      // dispatch(
+      //   authSlice.actions.updateUserProfile({
+      //     userId: currentUser.uid(),
+      //     userName: currentUser.displayName,
+      //     stateChange: true,
+      //   })
+      // );
       console.log("user", user);
     } catch (err) {
       console.log(err);
