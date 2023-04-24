@@ -34,7 +34,6 @@ export default RegistrationScreen = ({ navigation }) => {
     }
     dispatch(signup(state));
     setState(initislState);
-    // navigation.navigate("Home");
   };
 
   const keyboardHide = () => {

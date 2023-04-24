@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// import React, { useState } from "react";
 // // import { StatusBar } from "expo-status-bar";
 // import {
 //   StyleSheet,
