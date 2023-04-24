@@ -7,11 +7,9 @@ import {
 import { auth } from "../../firebase/config";
 import { authSlice } from "./authReducer";
 
-// const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
-
 export const signup =
   ({ userName, email, password }) =>
-  async (dispath, getState) => {
+  async (dispatch, getState) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -20,7 +18,7 @@ export const signup =
       );
       const currentUser = auth.currentUser;
       await updateProfile(currentUser, { displayName: userName });
-      dispath(
+      dispatch(
         authSlice.actions.updateUserProfile({
           userId: auth.currentUser.uid(),
           userName: auth.currentUser.displayName,
@@ -35,11 +33,13 @@ export const signup =
 
 export const signin =
   ({ email, password }) =>
-  async (dispath, getState) => {
+  async (dispatch, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
+   
+      // const user = await signInWithEmailAndPassword(auth, email, password);
       // const currentUser = auth.currentUser;
-      // dispath(
+      // dispatch(
       //   authSlice.actions.updateUserProfile({
       //     userId: currentUser.uid(),
       //     userName: currentUser.displayName,
@@ -52,17 +52,17 @@ export const signin =
     }
   };
 
-export const signout = () => async (dispath, getSatte) => {
+export const signout = () => async (dispatch, getSatte) => {
   await signOut();
-  dispath(authSlice.actions.authSignOut());
+  dispatch(authSlice.actions.authSignOut());
 };
 
-export const authStateChangeUser = () => async (dispath, getState) => {
+export const authStateChangeUser = () => async (dispatch, getState) => {
   await auth.onAuthStateChanged((user) => {
     if (user) {
-      dispath(authSlice.actions.authStateChange({ stateChange: true }));
+      dispatch(authSlice.actions.authStateChange({ stateChange: true }));
 
-      dispath(
+      dispatch(
         authSlice.actions.updateUserProfile({
           userId: auth.currentUser.uid(),
           userName: auth.currentUser.displayName,

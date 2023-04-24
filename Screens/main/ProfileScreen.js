@@ -69,7 +69,6 @@ const ProfileScreen = () => {
           </TouchableOpacity>
 
           <Text style={styles.user_name}>Name</Text>
-          <Text>aaaaaaaaa</Text>
 
           <FlatList
             data={userPosts}

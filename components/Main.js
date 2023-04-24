@@ -5,19 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { authStateChangeUser } from "../redux/auth/authOperations";
 
 const Main = () => {
-  // const { stateChange } = useSelector((state) => state.auth);
-  // const dispath = useDispatch();
+  const { stateChange } = useSelector((state) => state.auth);
+  const dispath = useDispatch();
 
-  // useEffect(() => {
-  //   dispath(authStateChangeUser());
-  // }, []);
+  useEffect(() => {
+    dispath(authStateChangeUser());
+  }, []);
 
   // // const routing = useRoute(stateChange);
-  // const routing = useRoute(true);
-  const state = useSelector((state) => state);
-
-  authStateChangeUser;
-  const routing = useRoute(state.auth.stateChange);
+  const routing = useRoute(true);
 
   return <NavigationContainer>{routing}</NavigationContainer>;
 };
