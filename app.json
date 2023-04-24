@@ -2,6 +2,7 @@
   "expo": {
     "jsEngine": "hermes",
     "name": "Post App",
+    "privacy": "public",
     "slug": "rn-post-app",
     "version": "1.0.0",
     "orientation": "default",
