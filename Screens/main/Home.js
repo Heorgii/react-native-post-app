@@ -12,7 +12,7 @@ import ProfileScreen from "./ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { signout } from "../../redux/auth/authOperations";
+import { signout } from "../../Redux/auth/authOperations";
 
 const Home = () => {
   const dispatch = useDispatch();

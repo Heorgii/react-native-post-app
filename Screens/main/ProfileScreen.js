@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { signout } from "../../redux/auth/authOperations";
+import { signout } from "../../Redux/auth/authOperations";
 import { collection, query, where } from "firebase/firestore";
 
 const ProfileScreen = () => {

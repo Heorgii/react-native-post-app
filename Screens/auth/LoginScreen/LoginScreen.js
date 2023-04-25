@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { signin } from "../../../redux/auth/authOperations";
+import { signin } from "../../../Redux/auth/authOperations";
 const initislState = {
   email: "",
   password: "",
