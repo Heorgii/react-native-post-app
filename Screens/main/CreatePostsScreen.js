@@ -33,14 +33,11 @@ const CreatePostsScreen = ({ navigation }) => {
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
-
-      // let location = await Location.getCurrentPositionAsync({});
-      // setLocation(location);
     })();
   }, []);
 
   const takePhoto = async () => {
-    const { uri } = await camera.takePictureAsync();
+    const {uri} = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync({});
     // const address = await Location.reverseGeocodeAsync(location.coords);
     // console.log("address", address);
@@ -69,7 +66,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();
-    console.log('response: ',response, "uploadPhotoToServer file: " ,file);
+    console.log("response: ", response, "uploadPhotoToServer file: ", file);
     const uniquePostId = Date.now().toString();
     const storageRef = ref(storage, `postImage/${uniquePostId}`);
     await uploadBytes(storageRef, file);

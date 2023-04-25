@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { signout } from "../../Redux/auth/authOperations";
+import { signout } from "../../redux/auth/authOperations";
 import { collection, query, where } from "firebase/firestore";
 
 const ProfileScreen = () => {
@@ -68,8 +68,6 @@ const ProfileScreen = () => {
             <MaterialIcons name="logout" size={24} color="#BDBDBD" />
           </TouchableOpacity>
 
-          <Text style={styles.user_name}>Name</Text>
-
           <FlatList
             data={userPosts}
             keyExtractor={(item, indx) => indx.toString()}
@@ -124,17 +122,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 22,
     right: 16,
-  },
-  user_name: {
-    marginTop: 64,
-    marginBottom: 64,
-    fontFamily: "Roboto",
-    fontWeight: "500",
-    fontSize: 30,
-    lineHeight: 35,
-    textAlign: "center",
-    letterSpacing: 0.01,
-    color: "#212121",
   },
   imgProfile:{
     marginBottom: 32,

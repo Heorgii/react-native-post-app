@@ -4,8 +4,8 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../../Firebase/config";
-import { authSlice } from "./authReducer";
+import { auth } from "../../firebase/config";
+import authSlice from "./authReducer";
 
 export const signup =
   ({ userName, email, password }) =>

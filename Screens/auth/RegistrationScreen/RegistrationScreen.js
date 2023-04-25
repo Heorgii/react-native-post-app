@@ -13,7 +13,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { signup } from "../../../Redux/auth/authOperations";
+import { signup } from "../../../redux/auth/authOperations";
 
 const initislState = {
   userName: "",
