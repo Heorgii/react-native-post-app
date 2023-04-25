@@ -1,7 +1,7 @@
 import * as Font from "expo-font";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-// import Main from "./Components/Main";
+import Main from "./Components/Main";
 
 const fonts = async () => {
   await Font.loadAsync({
@@ -12,14 +12,13 @@ const fonts = async () => {
 };
 
 export default function App() {
-
   if (!fonts) {
     return null;
   }
 
   return (
     <Provider store={store}>
-      <MaiN />
+      <Main />
     </Provider>
   );
 }
