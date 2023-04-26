@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { db, storage } from "../../firebase/config";
 import { useSelector } from "react-redux";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -67,7 +67,6 @@ const CreatePostsScreen = ({ navigation }) => {
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();
-    console.log("response: ", response, "uploadPhotoToServer file: ", file);
     const uniquePostId = Date.now().toString();
     const storageRef = ref(storage, `postImage/${uniquePostId}`);
     await uploadBytes(storageRef, file);
@@ -94,8 +93,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <TextInput
           style={styles.cameraInp}
           type="text"
-          // onChangeText={setComment}
-          onChangeText={(text) => setComment(text)}
+          onChangeText={setComment}
           placeholder="Name..."
         />
 

@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList, Image, Button } from "react-native";
-import { db } from "../../firebase/config";
-import { collection, getDocs } from "firebase/firestore";
+import { db, storage } from "../../firebase/config";
+import { collection, doc, getDocs } from "firebase/firestore";
+import { listAll, ref } from "firebase/storage";
 
 const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
   const getAllPost = async () => {
-    const allPosts = await getDocs(collection(db, "posts"));
+    // const allPosts = await getDocs(collection(storage, "postImage"));
+    // // const allPosts = await getDocs(ref(storage, "postImage"));
+    // const saveAllPost = [];
+    // allPosts.forEach((doc) => {
+    //   saveAllPost.push({ ...doc.data(), id: doc.id });
+    //   setPosts(saveAllPost);
+    // });
+    const folderRef = ref(storage, "postImage");
     const saveAllPost = [];
-    allPosts.forEach((doc) => {
-      saveAllPost.push({ ...doc.data(), id: doc.id });
-      setPosts(saveAllPost);
-    });
+    listAll(folderRef)
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          saveAllPost.push({...itemRef});
+          setPosts(saveAllPost);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -27,6 +41,7 @@ const DefaultPostsScreen = ({ route, navigation }) => {
   useEffect(() => {
     getAllPost();
   }, []);
+
 
   console.log("posts", posts);
 

@@ -11,35 +11,49 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../../redux/auth/authOperations";
-import { collection, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db, storage } from "../../firebase/config";
+import { listAll, ref } from "firebase/storage";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({route}) => {
   const [avatar, setAvatar] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    getUserPosts();
-  }, []);
-
   const getUserPosts = async () => {
-    const userPost = query(
-      collection(db, "posts"),
-      where("userId", "==", userId)
-    );
+    // const userPost = query(
+    //   collection(storage, "postImage"),
+    //   where("userId", "==", userId)
+    // );
+    // const querySnapshot = await getDocs(userPost);
+    // const saveAllPost = [];
+    // querySnapshot.forEach((doc) => {
+    //   saveAllPost.push({ ...doc.data(), id: doc.id });
+    // });
+    // setUserPosts(saveAllPost);
 
-    const querySnapshot = await getDocs(userPost);
+    const folderRef = ref(storage, "postImage");
     const saveAllPost = [];
-    querySnapshot.forEach((doc) => {
-      saveAllPost.push({ ...doc.data(), id: doc.id });
-    });
-    setUserPosts(saveAllPost);
+    listAll(folderRef)
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          saveAllPost.push({ ...itemRef });
+          setUserPosts(saveAllPost);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const signOut = () => {
     dispatch(signout());
   };
+
+  useEffect(() => {
+    getUserPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -123,7 +137,7 @@ const styles = StyleSheet.create({
     top: 22,
     right: 16,
   },
-  imgProfile:{
+  imgProfile: {
     marginBottom: 32,
   },
 });
