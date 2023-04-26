@@ -33,11 +33,12 @@ const CreatePostsScreen = ({ navigation }) => {
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
+      Camera.useCameraPermissions();
     })();
   }, []);
 
   const takePhoto = async () => {
-    const {uri} = await camera.takePictureAsync();
+    const { uri } = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync({});
     // const address = await Location.reverseGeocodeAsync(location.coords);
     // console.log("address", address);
@@ -93,7 +94,8 @@ const CreatePostsScreen = ({ navigation }) => {
         <TextInput
           style={styles.cameraInp}
           type="text"
-          onChangeText={setComment}
+          // onChangeText={setComment}
+          onChangeText={(text) => setComment(text)}
           placeholder="Name..."
         />
 

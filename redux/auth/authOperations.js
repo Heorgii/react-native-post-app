@@ -20,7 +20,7 @@ export const signup =
       await updateProfile(currentUser, { displayName: userName });
       dispatch(
         authSlice.actions.updateUserProfile({
-          userId: auth.currentUser.uid(),
+          userId: auth.currentUser.uid,
           userName: auth.currentUser.displayName,
           stateChange: true,
         })
@@ -36,16 +36,16 @@ export const signin =
   async (dispatch, getState) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log("user", user);
    
       const currentUser = auth.currentUser;
       dispatch(
         authSlice.actions.updateUserProfile({
-          userId: currentUser.uid(),
+          userId: currentUser.uid,
           userName: currentUser.displayName,
           stateChange: true,
         })
       );
-      console.log("user", user);
     } catch (err) {
       console.log(err);
     }

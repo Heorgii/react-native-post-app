@@ -5,7 +5,6 @@ import { collection, getDocs } from "firebase/firestore";
 
 const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  // const [local, setLocal] = useState([]);
 
   const getAllPost = async () => {
     const allPosts = await getDocs(collection(db, "posts"));
@@ -30,7 +29,6 @@ const DefaultPostsScreen = ({ route, navigation }) => {
   }, []);
 
   console.log("posts", posts);
-  // console.log("local", local);
 
   return (
     <View style={styles.container}>
