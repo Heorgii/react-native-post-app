@@ -52,7 +52,7 @@ export const signin =
   };
 
 export const signout = () => async (dispatch, getSatte) => {
-  await signOut();
+  await signOut(auth);
   dispatch(authSlice.actions.authSignOut());
 };
 
