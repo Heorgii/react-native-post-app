@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 const NavBtnStack = createBottomTabNavigator();
 
-import DefaultPostsScreen from "../nestedScreens/DefaultPostScreen";
+import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 // Iocns
@@ -34,7 +34,7 @@ const Home = () => {
           ),
         }}
         name="Posts"
-        component={DefaultPostsScreen}
+        component={PostsScreen}
       />
 
       <NavBtnStack.Screen

@@ -6,14 +6,20 @@ import CommentsScreen from "../nestedScreens/CommentsScreen";
 const NestedScreen = createStackNavigator();
 
 const PostsScreen = () => {
-  <NestedScreen.Navigator>
-    <NestedScreen.Screen
-      name="Posts"
-      component={DefaultPostsScreen}
-    />
-    <NestedScreen.Screen name="Map" component={MapScreen} />
-    <NestedScreen.Screen name="Comments" component={CommentsScreen} />
-  </NestedScreen.Navigator>;
+  return (
+    <NestedScreen.Navigator screenOptions={{ showLabel: false }}>
+      <NestedScreen.Screen
+        options={{
+          title: false,
+          headerShown: false,
+        }}
+        name="DefaultScreen"
+        component={DefaultPostsScreen}
+      />
+      <NestedScreen.Screen name="Map" component={MapScreen} />
+      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
+    </NestedScreen.Navigator>
+  );
 };
 
-export default PostsScreen; 
+export default PostsScreen;

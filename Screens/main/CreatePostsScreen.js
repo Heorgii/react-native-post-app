@@ -23,7 +23,6 @@ const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [comment, setComment] = useState("");
   const [location, setLocation] = useState(null);
-
   const { userId, userName } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -49,20 +48,35 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("Posts", { photo });
+    navigation.navigate("DefaultScreen", { photo });
   };
 
   const uploadPostToServer = async () => {
-    const photo = await uploadPhotoToServer();
-    const createPost = doc(collection(db, "posts"));
-    await setDoc(createPost, {
-      photo,
-      comment,
-      location: location.coords,
-      userId,
-      userName,
-    });
+    try {
+      const photo = await uploadPhotoToServer();
+      const createPost = doc(collection(db, "posts"));
+      await setDoc(createPost, {
+        photo,
+        comment,
+        location: location.coords,
+        userId,
+        userName,
+      });  
+    } catch (error) {
+      console.log("error: ", error);
+    }
+    
   };
+
+//   rules_version = '2';
+// service firebase.storage {
+//   match /b/rn-post-app-d0dfa.appspot.com/o {
+//     match /{allPaths=**} {
+//       allow read, write;
+      
+//     }
+//   }
+// }   
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);

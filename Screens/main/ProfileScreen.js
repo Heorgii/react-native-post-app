@@ -11,11 +11,11 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../../redux/auth/authOperations";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { db, storage } from "../../firebase/config";
-import { listAll, ref } from "firebase/storage";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
-const ProfileScreen = ({route}) => {
+const ProfileScreen = ({ route }) => {
   const [avatar, setAvatar] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
   const dispatch = useDispatch();
@@ -33,18 +33,38 @@ const ProfileScreen = ({route}) => {
     // });
     // setUserPosts(saveAllPost);
 
+    //   const folderRef = ref(storage, "postImage");
+    //   const saveAllPost = [];
+    //   listAll(folderRef)
+    //     .then((res) => {
+    //       res.items.forEach((itemRef) => {
+    //         saveAllPost.push({ ...itemRef });
+    //         setUserPosts(saveAllPost);
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+
+
     const folderRef = ref(storage, "postImage");
     const saveAllPost = [];
-    listAll(folderRef)
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          saveAllPost.push({ ...itemRef });
-          setUserPosts(saveAllPost);
+    try {
+      const items = await listAll(folderRef);
+      for (let i = 0; i < items.items.length; i++) {
+        const itemRef = items.items[i];
+        const downloadUrl = await getDownloadURL(itemRef);
+        saveAllPost.push({
+          id: doc.id,
+          photo: downloadUrl,
+          comment: doc.comment,
+          // location: doc.location,
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+      setUserPosts(saveAllPost);
+    } catch (error) {
+      console.log("error-user ", error);
+    }
   };
 
   const signOut = () => {
